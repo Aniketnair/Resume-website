@@ -45,8 +45,6 @@ Click any planet or satellite for a detail card.
 
 ## Personalize before you publish
 
-- **contact.html** and the Space Journey's beacon section both say "Add your LinkedIn URL
-  here" — replace both with your real LinkedIn link (or remove those cards).
 - **Photo (optional)**: if you want a headshot on the classic site, add an image to a new
   `assets/` folder and reference it in `resume.html`'s hero section.
 - **Resume PDF (optional)**: drop a PDF into the project folder (e.g.

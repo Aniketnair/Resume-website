@@ -13,9 +13,25 @@
 <body>
 
   <canvas id="starfield" aria-hidden="true"></canvas>
-  <div class="flight-path" aria-hidden="true">
-    <div class="flight-path-line"></div>
-    <div class="flight-ship" id="flightShip">🛰️</div>
+  <audio id="ambientMusic" src="assets/audio/ambient-space-loop.mp3" preload="auto" loop></audio>
+  <div class="flight-ship" id="flightShip" aria-hidden="true">
+    <div class="flight-ship-inner">
+      <div class="ship-flame"></div>
+      <svg class="ship-svg" viewBox="0 0 64 28" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="26" cy="14" rx="18" ry="7" fill="url(#shipBody)" />
+        <path d="M44 8 L60 14 L44 20 Z" fill="url(#shipBody)" />
+        <path d="M12 19 L4 26 L15 21 Z" fill="#5a86c2" />
+        <path d="M12 9 L4 2 L15 7 Z" fill="#5a86c2" />
+        <circle cx="30" cy="14" r="4.2" fill="#bfe6ff" opacity="0.95" />
+        <circle cx="30" cy="14" r="2.3" fill="#2c5a8f" />
+        <defs>
+          <linearGradient id="shipBody" x1="8" y1="14" x2="60" y2="14" gradientUnits="userSpaceOnUse">
+            <stop offset="0" stop-color="#dfe9f7" />
+            <stop offset="1" stop-color="#9fbfe3" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
   </div>
 
   <div class="hud">
@@ -224,10 +240,10 @@
               <span class="beacon-link-label">Location</span>
               <span class="beacon-link-value">Atlanta, GA</span>
             </div>
-            <div class="beacon-link">
+            <a class="beacon-link" href="https://www.linkedin.com/in/aniket-nair-87352350" target="_blank" rel="noopener">
               <span class="beacon-link-label">LinkedIn</span>
-              <span class="beacon-link-value">Add your LinkedIn URL here</span>
-            </div>
+              <span class="beacon-link-value">linkedin.com/in/aniket-nair-87352350</span>
+            </a>
           </div>
           <div class="beacon-actions">
             <a class="btn-launch btn-launch-outline" href="resume.html">📄 View Classic Resume</a>

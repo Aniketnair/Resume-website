@@ -23,6 +23,30 @@
     canvas.height = window.innerHeight;
   }
 
+  // Soft drifting nebula clouds — positions are fractions of the canvas size
+  // so they scale with the window, colors are "r,g,b" for use in rgba().
+  var nebulae = [
+    { x: 0.16, y: 0.22, r: 260, color: "99,102,241", phase: 0 },   // indigo
+    { x: 0.82, y: 0.16, r: 220, color: "219,80,150", phase: 2.1 }, // magenta
+    { x: 0.68, y: 0.72, r: 300, color: "45,190,180", phase: 4.4 }, // teal
+    { x: 0.22, y: 0.78, r: 240, color: "129,140,248", phase: 6.2 } // violet
+  ];
+
+  function drawNebulae(t) {
+    for (var i = 0; i < nebulae.length; i++) {
+      var n = nebulae[i];
+      var driftX = reduceMotion ? 0 : Math.sin(t * 0.00006 + n.phase) * 70;
+      var driftY = reduceMotion ? 0 : Math.cos(t * 0.00005 + n.phase) * 46;
+      var cx = n.x * canvas.width + driftX;
+      var cy = n.y * canvas.height + driftY;
+      var grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, n.r);
+      grad.addColorStop(0, "rgba(" + n.color + ", 0.16)");
+      grad.addColorStop(1, "rgba(" + n.color + ", 0)");
+      ctx.fillStyle = grad;
+      ctx.fillRect(cx - n.r, cy - n.r, n.r * 2, n.r * 2);
+    }
+  }
+
   function initStars() {
     stars = [];
     for (var i = 0; i < STAR_COUNT; i++) {
@@ -41,6 +65,7 @@
 
   function drawStars(t) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawNebulae(t);
 
     if (!reduceMotion) {
       parallaxX += (targetParallaxX - parallaxX) * 0.04;
@@ -95,14 +120,20 @@
   requestAnimationFrame(drawStars);
 
   /* ============================================================
-     AUDIO — synthesized ambient hum, whoosh, and UI blips
-     (Web Audio API — no external audio files)
+     AUDIO — background ambient music (looping track) plus
+     synthesized whoosh and UI blips generated in code
      ============================================================ */
 
   var audioCtx = null;
   var masterGain = null;
-  var ambientNodes = null;
   var soundEnabled = false;
+  var ambientAudio = document.getElementById("ambientMusic");
+  var AMBIENT_MUSIC_VOLUME = 0.45;
+
+  if (ambientAudio) {
+    ambientAudio.loop = true;
+    ambientAudio.volume = 0;
+  }
 
   function ensureAudioContext() {
     if (!audioCtx) {
@@ -118,67 +149,33 @@
     return audioCtx;
   }
 
-  function startAmbient() {
-    var ac = ensureAudioContext();
-    if (ambientNodes) return;
+  // Smoothly ramps the background music's volume — <audio>.volume has no
+  // built-in scheduling like a Web Audio GainNode, so this fades it by hand.
+  function fadeAmbientMusic(target, durationMs) {
+    if (!ambientAudio) return;
+    var start = ambientAudio.volume;
+    var startTime = null;
 
-    var droneGain = ac.createGain();
-    droneGain.gain.value = 0.5;
-    droneGain.connect(masterGain);
-
-    var lowpass = ac.createBiquadFilter();
-    lowpass.type = "lowpass";
-    lowpass.frequency.value = 500;
-    lowpass.connect(droneGain);
-
-    var osc1 = ac.createOscillator();
-    osc1.type = "sine";
-    osc1.frequency.value = 55;
-    osc1.connect(lowpass);
-
-    var osc2 = ac.createOscillator();
-    osc2.type = "triangle";
-    osc2.frequency.value = 82.5; // perfect fifth-ish above osc1 for a spacey drone
-    osc2.connect(lowpass);
-
-    // slow LFO breathing the drone's volume
-    var lfo = ac.createOscillator();
-    lfo.type = "sine";
-    lfo.frequency.value = 0.08;
-    var lfoGain = ac.createGain();
-    lfoGain.gain.value = 0.15;
-    lfo.connect(lfoGain);
-    lfoGain.connect(droneGain.gain);
-
-    // filtered noise for a soft "cosmic static" bed
-    var bufferSize = 2 * ac.sampleRate;
-    var noiseBuffer = ac.createBuffer(1, bufferSize, ac.sampleRate);
-    var output = noiseBuffer.getChannelData(0);
-    for (var i = 0; i < bufferSize; i++) {
-      output[i] = Math.random() * 2 - 1;
+    function step(ts) {
+      if (startTime === null) startTime = ts;
+      var progress = Math.min((ts - startTime) / durationMs, 1);
+      ambientAudio.volume = start + (target - start) * progress;
+      if (progress < 1) requestAnimationFrame(step);
     }
-    var noise = ac.createBufferSource();
-    noise.buffer = noiseBuffer;
-    noise.loop = true;
 
-    var noiseFilter = ac.createBiquadFilter();
-    noiseFilter.type = "bandpass";
-    noiseFilter.frequency.value = 700;
-    noiseFilter.Q.value = 0.6;
+    requestAnimationFrame(step);
+  }
 
-    var noiseGain = ac.createGain();
-    noiseGain.gain.value = 0.035;
-
-    noise.connect(noiseFilter);
-    noiseFilter.connect(noiseGain);
-    noiseGain.connect(masterGain);
-
-    osc1.start();
-    osc2.start();
-    lfo.start();
-    noise.start();
-
-    ambientNodes = { osc1: osc1, osc2: osc2, lfo: lfo, noise: noise, droneGain: droneGain };
+  function startAmbient() {
+    if (!ambientAudio) return;
+    if (ambientAudio.paused) {
+      // Browsers block autoplay until a user gesture; this only ever runs
+      // from the sound-toggle click handler, so the gesture requirement
+      // is already satisfied.
+      ambientAudio.play().catch(function () {
+        /* Playback will retry on the next click if it was blocked. */
+      });
+    }
   }
 
   function playBlip() {
@@ -244,6 +241,7 @@
     var now = audioCtx.currentTime;
     masterGain.gain.cancelScheduledValues(now);
     masterGain.gain.setTargetAtTime(soundEnabled ? 0.7 : 0, now, 0.25);
+    fadeAmbientMusic(soundEnabled ? AMBIENT_MUSIC_VOLUME : 0, 900);
 
     soundToggle.setAttribute("aria-pressed", String(soundEnabled));
     soundToggle.querySelector(".hud-btn-label").textContent = soundEnabled
@@ -298,16 +296,8 @@
     });
   });
 
-  var flightShip = document.getElementById("flightShip");
-  function updateShipPosition() {
-    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    var progress = docHeight > 0 ? window.scrollY / docHeight : 0;
-    var pathHeight = flightShip.parentElement.clientHeight;
-    flightShip.style.top = (progress * pathHeight) + "px";
-  }
-  window.addEventListener("scroll", updateShipPosition, { passive: true });
-  window.addEventListener("resize", updateShipPosition);
-  updateShipPosition();
+  // The ship now flies on its own free-running CSS loop (see .flight-ship
+  // in space.css) instead of tracking scroll position — no JS needed here.
 
   /* ============================================================
      LAUNCH / REPLAY BUTTONS

@@ -22,6 +22,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -31,6 +32,7 @@ body {
   font-family: var(--font-body);
   line-height: 1.65;
   overflow-x: hidden;
+  position: relative;
 }
 
 h1, h2, h3 {
@@ -72,46 +74,76 @@ button {
   background: radial-gradient(ellipse at 50% 0%, #101833 0%, var(--space-navy) 45%, var(--space-black) 100%);
 }
 
-/* ---------- Flight path ---------- */
-
-.flight-path {
-  position: absolute;
-  top: 0;
-  right: 28px;
-  width: 2px;
-  height: 100%;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.flight-path-line {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 2px;
-  height: 100%;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(140, 170, 255, 0.35) 0,
-    rgba(140, 170, 255, 0.35) 6px,
-    transparent 6px,
-    transparent 16px
-  );
-}
+/* ---------- Ambient ship — flies freely across the sky on its own
+   loop, independent of scroll position (no track, no progress bar —
+   just something alive moving through the world, like distant
+   traffic in an open-world game) ---------- */
 
 .flight-ship {
+  position: fixed;
+  top: 72px;
+  left: -90px;
+  z-index: 5;
+  pointer-events: none;
+  animation: ship-fly-across 24s linear infinite;
+}
+
+@keyframes ship-fly-across {
+  from { left: -90px; }
+  to   { left: 100%; }
+}
+
+.flight-ship-inner {
+  position: relative;
+  animation: ship-bob 2.6s ease-in-out infinite;
+}
+
+@keyframes ship-bob {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50%      { transform: translateY(-10px) rotate(2deg); }
+}
+
+.ship-svg {
+  width: 52px;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 0 8px rgba(110, 168, 254, 0.65));
+}
+
+.ship-flame {
   position: absolute;
-  left: 50%;
-  top: 0;
-  transform: translate(-50%, -50%);
-  font-size: 1.3rem;
-  filter: drop-shadow(0 0 8px rgba(110, 168, 254, 0.8));
-  transition: top 0.1s linear;
+  top: 50%;
+  left: -2px;
+  width: 20px;
+  height: 10px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse at right, #ffd9a0 0%, #ff9a4d 45%, rgba(255, 154, 77, 0) 75%);
+  animation: flame-flicker 0.18s ease-in-out infinite alternate;
+}
+
+@keyframes flame-flicker {
+  from { opacity: 0.75; transform: translateY(-50%) scaleX(0.85); }
+  to   { opacity: 1;    transform: translateY(-50%) scaleX(1.15); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flight-ship,
+  .flight-ship-inner,
+  .ship-flame {
+    animation: none !important;
+    left: 50%;
+  }
 }
 
 @media (max-width: 900px) {
-  .flight-path {
-    display: none;
+  .flight-ship {
+    top: 58px;
+    animation-duration: 18s;
+  }
+
+  .ship-svg {
+    width: 38px;
   }
 }
 
@@ -403,6 +435,23 @@ main {
 
 .planet:hover {
   transform: scale(1.08) !important;
+}
+
+/* Hovering a planet spins it up — the surface bands race by (background-
+   position) and the 3D tilt swings faster and wider, reading as "this
+   planet just started rotating for me" rather than its usual slow drift. */
+.planet-system:hover .planet {
+  animation-duration: 2.2s;
+}
+
+.planet-system:hover .planet-3d {
+  animation: planet-wobble-hover 1.8s ease-in-out infinite;
+}
+
+@keyframes planet-wobble-hover {
+  0%   { transform: rotateY(-38deg) rotateX(8deg); }
+  50%  { transform: rotateY(38deg) rotateX(-8deg); }
+  100% { transform: rotateY(-38deg) rotateX(8deg); }
 }
 
 .planet-shine {
