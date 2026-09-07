@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aniket Nair — A Journey Through Space</title>
+  <meta name="description" content="Aniket Nair's career, told as a journey through space — Earth to Senior Consultant, with career highlights as orbiting satellites." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/space.css" />
+</head>
+<body>
+
+  <canvas id="starfield" aria-hidden="true"></canvas>
+  <div class="flight-path" aria-hidden="true">
+    <div class="flight-path-line"></div>
+    <div class="flight-ship" id="flightShip">🛰️</div>
+  </div>
+
+  <div class="hud">
+    <button id="soundToggle" class="hud-btn" aria-pressed="false" type="button">
+      <span class="hud-btn-icon">🔈</span><span class="hud-btn-label">Enable Sound</span>
+    </button>
+    <a href="resume.html" class="hud-btn hud-link">📄 Classic Resume</a>
+  </div>
+
+  <nav class="dot-nav" id="dotNav" aria-label="Jump to chapter">
+    <a href="#hero" data-target="hero" class="dot-link active" aria-label="Launch Pad"><span></span></a>
+    <a href="#planet-analyst" data-target="planet-analyst" class="dot-link" aria-label="Analyst"><span></span></a>
+    <a href="#planet-consultant" data-target="planet-consultant" class="dot-link" aria-label="Consultant / Team Lead"><span></span></a>
+    <a href="#planet-senior" data-target="planet-senior" class="dot-link" aria-label="Senior Consultant"><span></span></a>
+    <a href="#beacon" data-target="beacon" class="dot-link" aria-label="Contact"><span></span></a>
+  </nav>
+
+  <main>
+
+    <!-- ===================== HERO / EARTH ===================== -->
+    <section class="chapter chapter-hero" id="hero" data-planet="hero">
+      <div class="chapter-inner">
+        <div class="content-card">
+          <p class="chapter-eyebrow">Mission Log · Launch Pad</p>
+          <h1>My Journey Through Space</h1>
+          <p class="chapter-lede">
+            Aniket Nair — charting a career across the stars. Every planet ahead is a role.
+            Every satellite is something I built along the way. Scroll to launch.
+          </p>
+          <p class="chapter-detail">
+            <strong>Origin:</strong> B.E., Computer Science — Mumbai University<br />
+            <strong>Ground crew:</strong> iGate · Patni Computer Systems — early tenures in
+            enterprise technology delivery before the mission to Capgemini began.
+          </p>
+          <button class="btn-launch" id="launchBtn" type="button">Begin the Journey ↓</button>
+        </div>
+        <div class="planet-system planet-system-earth">
+          <div class="planet-3d">
+            <div class="planet planet-earth" data-title="Earth — Mission Start" data-meta="B.E. Computer Science · Mumbai University" data-desc="Ground crew: iGate and Patni Computer Systems — early tenures in enterprise technology delivery before the mission to Capgemini began.">
+              <div class="planet-shine"></div>
+            </div>
+          </div>
+          <div class="planet-ring planet-ring-atmo"></div>
+        </div>
+      </div>
+      <div class="scroll-cue" aria-hidden="true">
+        <span>Scroll</span>
+        <div class="scroll-cue-line"></div>
+      </div>
+    </section>
+
+    <!-- ===================== PLANET: ANALYST ===================== -->
+    <section class="chapter" id="planet-analyst" data-planet="planet-analyst">
+      <div class="chapter-inner">
+        <div class="content-card">
+          <p class="chapter-eyebrow">First Landing · 2010 – 2013</p>
+          <h2>Analyst</h2>
+          <p class="chapter-org">Capgemini Inc.</p>
+          <ul class="chapter-list">
+            <li>Started my career supporting credit card program delivery, building the technical and domain foundation for later leadership responsibilities.</li>
+            <li>First contact with enterprise financial-services systems — the training ground for everything that followed.</li>
+          </ul>
+        </div>
+        <div class="planet-system planet-system-sm">
+          <div class="planet-3d">
+            <div class="planet planet-rocky" data-title="Analyst" data-meta="Capgemini Inc. · 2010 – 2013" data-desc="Started my career supporting credit card program delivery, building the technical and domain foundation for later leadership responsibilities.">
+              <div class="planet-shine"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PLANET: CONSULTANT / TEAM LEAD ===================== -->
+    <section class="chapter" id="planet-consultant" data-planet="planet-consultant">
+      <div class="chapter-inner">
+        <div class="content-card">
+          <p class="chapter-eyebrow">Second Orbit · 2013 – 2016</p>
+          <h2>Consultant / Team Lead</h2>
+          <p class="chapter-org">Capgemini Inc.</p>
+          <ul class="chapter-list">
+            <li>Progressed into a team lead role, taking on greater ownership of delivery workstreams and client communication.</li>
+            <li>Gravity shifted from execution to leadership — coordinating a crew instead of flying solo.</li>
+          </ul>
+        </div>
+        <div class="planet-system">
+          <div class="planet-3d">
+            <div class="planet planet-banded" data-title="Consultant / Team Lead" data-meta="Capgemini Inc. · 2013 – 2016" data-desc="Progressed into a team lead role, taking on greater ownership of delivery workstreams and client communication.">
+              <div class="planet-shine"></div>
+            </div>
+          </div>
+          <div class="planet-ring planet-ring-tilted"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PLANET: SENIOR CONSULTANT (+ satellites) ===================== -->
+    <section class="chapter chapter-senior" id="planet-senior" data-planet="planet-senior">
+      <div class="chapter-inner">
+        <div class="content-card">
+          <p class="chapter-eyebrow">Home Base · 2016 – Present</p>
+          <h2>Senior Consultant</h2>
+          <p class="chapter-org">Capgemini Inc. · Atlanta, GA</p>
+          <ul class="chapter-list">
+            <li>Lead enterprise program delivery across a portfolio of credit card programs (private-label and dual card) in financial services, spanning 116+ programs over the course of my tenure.</li>
+            <li>Manage an offshore engineering and QA team, maintaining direct C-suite client engagement throughout program lifecycles.</li>
+            <li>Work across IBM Mainframe and rules-based decisioning systems (PCF, Decision Quest, SCS) to deliver compliant, production-grade program changes.</li>
+            <li>Apply SAFe Agile practices to coordinate delivery across distributed teams.</li>
+          </ul>
+          <p class="chapter-hint">✦ Click a satellite orbiting the planet to see what I built in this orbit.</p>
+        </div>
+        <div class="planet-system planet-system-lg" id="seniorSystem">
+          <div class="planet-3d">
+            <div class="planet planet-home" data-title="Senior Consultant" data-meta="Capgemini Inc. · Atlanta, GA · 2016 – Present" data-desc="Lead enterprise program delivery across 116+ credit card programs, manage an offshore engineering and QA team with direct C-suite engagement, and apply SAFe Agile practices across distributed teams.">
+              <div class="planet-shine"></div>
+            </div>
+          </div>
+
+          <div class="orbit-ring" style="--radius:120px; --duration:20s; --delay:0s;">
+            <button class="satellite" type="button" data-title="Statement Content Hub" data-meta="React · C# · SQL Server" data-desc="Full-stack web application that replaced Excel-based statement content workflows, integrating with FirstData Decision Quest and PCS via a JSON data pipeline.">
+              <span class="satellite-counter">
+                <span class="satellite-dot"></span>
+                <span class="satellite-label">Statement Content Hub</span>
+              </span>
+            </button>
+          </div>
+
+          <div class="orbit-ring" style="--radius:170px; --duration:28s; --delay:-7s;">
+            <button class="satellite" type="button" data-title="Audit Process Automation" data-meta="C# · Scheduler · Fiserv UNIX" data-desc="Server application with an automated scheduler that pulls files from a Fiserv UNIX server, replacing 2–3 hours of manual audit reporting per cycle.">
+              <span class="satellite-counter">
+                <span class="satellite-dot"></span>
+                <span class="satellite-label">Audit Process Automation</span>
+              </span>
+            </button>
+          </div>
+
+          <div class="orbit-ring" style="--radius:220px; --duration:34s; --delay:-14s;">
+            <button class="satellite" type="button" data-title="AccessAgent" data-meta="React · Claude API" data-desc="AI-powered IT access request ticketing agent that integrates the Claude API for automated risk assessment and natural-language ticket queries.">
+              <span class="satellite-counter">
+                <span class="satellite-dot"></span>
+                <span class="satellite-label">AccessAgent</span>
+              </span>
+            </button>
+          </div>
+
+          <div class="orbit-ring" style="--radius:270px; --duration:42s; --delay:-21s;">
+            <button class="satellite" type="button" data-title="Gen AI Document Processing Initiative" data-meta="LLM Tooling · RAG" data-desc="Applied Gen AI/LLM tooling to unstructured document processing for cardholder statements and communications — exploring spending insights, personalized outreach, and RAG-based dispute resolution.">
+              <span class="satellite-counter">
+                <span class="satellite-dot"></span>
+                <span class="satellite-label">Gen AI Document Processing</span>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ship-systems">
+        <p class="ship-systems-title">⚙ Ship Systems</p>
+        <div class="ship-systems-grid">
+          <div class="ship-badge">
+            <span class="ship-badge-icon">🛡️</span>
+            <span>AWS Certified Solutions Architect</span>
+          </div>
+          <div class="ship-badge">
+            <span class="ship-badge-icon">🔄</span>
+            <span>SAFe Agile</span>
+          </div>
+        </div>
+        <div class="ship-tags">
+          <span class="ship-tag">Python</span>
+          <span class="ship-tag">SQL</span>
+          <span class="ship-tag">C#</span>
+          <span class="ship-tag">React</span>
+          <span class="ship-tag">IBM Mainframe</span>
+          <span class="ship-tag">SQL Server</span>
+          <span class="ship-tag">JSON Integration</span>
+          <span class="ship-tag">AWS (S3, Lambda, EC2)</span>
+          <span class="ship-tag">Decisioning Systems</span>
+          <span class="ship-tag">Gen AI / LLM Tooling</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== BEACON / CONTACT ===================== -->
+    <section class="chapter chapter-beacon" id="beacon" data-planet="beacon">
+      <div class="chapter-inner chapter-inner-beacon">
+        <div class="beacon-visual" aria-hidden="true">
+          <div class="beacon-core"></div>
+          <div class="beacon-ring beacon-ring-1"></div>
+          <div class="beacon-ring beacon-ring-2"></div>
+          <div class="beacon-ring beacon-ring-3"></div>
+        </div>
+        <div class="content-card content-card-beacon">
+          <p class="chapter-eyebrow">Transmitting · Deep Space Beacon</p>
+          <h2>Next Mission</h2>
+          <p class="chapter-lede">
+            Currently charting a course toward Senior/Principal Technical Program Manager
+            missions. Broadcasting on the following frequencies:
+          </p>
+          <div class="beacon-links">
+            <a class="beacon-link" href="mailto:aniketnair@gmail.com">
+              <span class="beacon-link-label">Email</span>
+              <span class="beacon-link-value">aniketnair@gmail.com</span>
+            </a>
+            <div class="beacon-link">
+              <span class="beacon-link-label">Location</span>
+              <span class="beacon-link-value">Atlanta, GA</span>
+            </div>
+            <div class="beacon-link">
+              <span class="beacon-link-label">LinkedIn</span>
+              <span class="beacon-link-value">Add your LinkedIn URL here</span>
+            </div>
+          </div>
+          <div class="beacon-actions">
+            <a class="btn-launch btn-launch-outline" href="resume.html">📄 View Classic Resume</a>
+            <button class="btn-launch" id="replayBtn" type="button">🔁 Replay the Journey</button>
+          </div>
+        </div>
+      </div>
+      <p class="mission-footer">&copy; 2026 Aniket Nair. Transmission ends.</p>
+    </section>
+
+  </main>
+
+  <!-- ===================== DETAIL PANEL ===================== -->
+  <div class="detail-modal" id="detailModal" hidden>
+    <div class="detail-panel" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+      <button class="detail-close" id="detailClose" type="button" aria-label="Close">✕</button>
+      <p class="detail-meta" id="detailMeta"></p>
+      <h3 id="detailTitle"></h3>
+      <p id="detailDesc"></p>
+    </div>
+  </div>
+
+  <script src="js/space.js"></script>
+</body>
+</html>
